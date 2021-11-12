@@ -1,6 +1,25 @@
+import SqlString from 'sqlstring'
+import escapeString from 'sql-string-escape'
+
 function buildCreateUserQuery(body) {
-	console.log(body)
-	return `insert into appusers (id, username, name, bio, url, avatar_url, created_at, followers_count, following_count, posts_count) values ('${body.id}', '${body.username}', '${body.name}', '${body.bio}','${body.url}', '${body.avatar_url}', '${body.created_at}',0,0,0)`
+	var srting = SqlString.format(
+		'insert into appusers (id, username, name, bio, url, avatar_url, created_at, followers_count, following_count, posts_count) values' +
+			'(?, ?, ?, ?, ?, ?,?, ?, ?, ?)',
+		[
+			body.id,
+			body.username,
+			body.name,
+			body.bio,
+			JSON.stringify(body.url),
+			body.avatar_url,
+			body.created_at,
+			0,
+			0,
+			0,
+		]
+	)
+	console.log(srting)
+	return srting
 }
 function buildUserFollowersQuery(body) {
 	return `CREATE TABLE ${body.id}followers (

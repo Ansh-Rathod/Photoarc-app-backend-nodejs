@@ -39,7 +39,22 @@ router.post(
 				.status(400)
 				.json({ success: false, error: 'Please provide all feilds.' })
 		}
-		var data = await pool.query(buildCreateUserQuery(req.body))
+		const body = req.body
+		var data = await pool.query(
+			'insert into appusers (id, username, name, bio, url, avatar_url, created_at, followers_count, following_count, posts_count) values ($1, $2, $3, $4, $5, $6,$7,$8, $9, $10)',
+			[
+				body.id,
+				body.username,
+				body.name,
+				body.bio,
+				JSON.stringify(body.url),
+				body.avatar_url,
+				body.created_at,
+				0,
+				0,
+				0,
+			]
+		)
 		await pool.query(buildUserFollowersQuery(req.body))
 		await pool.query(buildUserFollowingQuery(req.body))
 		await pool.query(buildUserPostsQuery(req.body))
