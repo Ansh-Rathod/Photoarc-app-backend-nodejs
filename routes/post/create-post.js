@@ -21,9 +21,15 @@ router.put(
 	'/upload-post',
 	upload.single('picture'),
 	asyncHandler(async (req, res, next) => {
+		if (req.file == undefined) {
+			res.status(400).send({
+				status: 400,
+				message: 'No file uploaded',
+			})
+		}
 		res.status(202).json({
 			success: true,
-			results: req.file,
+			url: req.file.path,
 		})
 	})
 )
