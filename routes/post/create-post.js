@@ -14,6 +14,7 @@ import {
 } from './sql-querys.js'
 
 const router = express.Router()
+router.use(express.json())
 const upload = multer({ storage: mediaUpload('posts') })
 
 router.put(
@@ -30,7 +31,19 @@ router.put(
 router.post(
 	'/create-post',
 	asyncHandler(async (req, res, next) => {
-		await pool.query(buildCreatePostsQuery(req.body))
+		const body = req.body
+		await pool.query(
+			`insert into ${body.user_id}posts
+			(post_id,post_image_url,caption,user_id,created_at,likes,comments_count)
+			 values ($1, $2,$3,$4,$5,ARRAY ['${body.user_id}'],0);`,
+			[
+				body.post_id,
+				body.post_image_url,
+				body.caption,
+				body.user_id,
+				body.created_at,
+			]
+		)
 		res.status(202).json({
 			success: true,
 			results: [],

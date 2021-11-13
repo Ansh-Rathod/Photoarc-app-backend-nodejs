@@ -4,7 +4,6 @@ import asyncHandler from '../../methods/async-function.js'
 import { mediaUpload } from '../../methods/media-upload.js'
 import multer from 'multer'
 import {
-	buildCreateUserQuery,
 	buildUserFollowersQuery,
 	buildUserFollowingQuery,
 	buildUserPostsQuery,

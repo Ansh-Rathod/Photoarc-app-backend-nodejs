@@ -9,6 +9,7 @@ import search from './routes/search/search.js'
 const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/v1/user/', createUser)
 app.use('/api/v1/user/events', followuser)
