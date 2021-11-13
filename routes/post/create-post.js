@@ -40,7 +40,7 @@ router.post(
 		const body = req.body
 		await pool.query(
 			`insert into ${body.user_id}posts
-			(post_id,post_image_url,caption,user_id,created_at,likes,comments_count)
+			(post_id,post_image_url,caption,user_id,posted_at,likes,comments_count)
 			 values ($1, $2,$3,$4,$5,ARRAY ['${body.user_id}'],0);`,
 			[
 				body.post_id,

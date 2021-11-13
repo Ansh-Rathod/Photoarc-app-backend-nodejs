@@ -17,7 +17,7 @@ function buildUserPostsQuery(body) {
         post_image_url TEXT,
         caption TEXT,
         user_id varchar(255) ,
-        created_at TIMESTAMP NOT NULL,
+        posted_at TIMESTAMP NOT NULL,
         likes TEXT [],
         comments_count INT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES appusers(id)
