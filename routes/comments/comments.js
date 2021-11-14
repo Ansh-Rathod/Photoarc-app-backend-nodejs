@@ -7,18 +7,18 @@ const router = express.Router()
 router.post(
 	'/create-comment',
 	asyncHandler(async (req, res, next) => {
-		const body =req.body
+		const body = req.body
 		await pool.query(
 			`insert into ${body.user_id}comments (commenter_user_id, post_id, comment_created_at , comment,comment_id)
 			 values
 			  ($1,$2,$3,$4,$5);`,
-			  [
+			[
 				body.commenter_user_id,
 				body.post_id,
 				body.comment_created_at,
 				body.comment,
 				body.comment_id,
-			  ]
+			]
 		)
 
 		res.status(200).json({
@@ -28,7 +28,7 @@ router.post(
 	})
 )
 
-router.get(
+router.post(
 	'/all',
 	asyncHandler(async (req, res, next) => {
 		var data = await pool.query(buildGetCommentsQuery(req.body))
