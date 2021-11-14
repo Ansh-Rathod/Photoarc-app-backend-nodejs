@@ -11,7 +11,7 @@ router.post(
 		await pool.query(
 			`insert into ${body.user_id}comments (commenter_user_id, post_id, comment_created_at , comment,comment_id)
 			 values
-			  ($1,$2,$3,$4,$5);`
+			  ($1,$2,$3,$4,$5);`,
 			  [
 				body.commenter_user_id,
 				body.post_id,
