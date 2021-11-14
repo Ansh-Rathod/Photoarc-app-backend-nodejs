@@ -42,7 +42,7 @@ function buildUserCommentsQuery(body) {
         commenter_user_id varchar(255) NOT NULL,
         post_id varchar(255) NOT NULL,
         comment TEXT NOT NULL,
-		created_at TIMESTAMP NOT NULL,
+		comment_created_at TIMESTAMP NOT NULL,
 		comment_id varchar(255) NOT NULL UNIQUE,
         FOREIGN KEY (commenter_user_id) REFERENCES appusers(id),
         FOREIGN KEY (post_id) REFERENCES ${body.id}posts(post_id)
