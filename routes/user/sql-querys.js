@@ -19,7 +19,7 @@ function buildUserPostsQuery(body) {
         user_id varchar(255) ,
         posted_at TIMESTAMP NOT NULL,
         likes TEXT [],
-        comments_count INT NOT NULL,
+        comments_count INT NOT NULL,    
         FOREIGN KEY (user_id) REFERENCES appusers(id)
     );`
 }

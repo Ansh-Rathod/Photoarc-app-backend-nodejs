@@ -41,7 +41,7 @@ router.post(
 		await pool.query(
 			`insert into ${body.user_id}posts
 			(post_id,post_image_url,caption,user_id,posted_at,likes,comments_count)
-			 values ($1, $2,$3,$4,$5,ARRAY ['${body.user_id}'],0);`,
+			 values ($1, $2,$3,$4,$5,'{}',0);`,
 			[
 				body.post_id,
 				body.post_image_url,
@@ -49,6 +49,9 @@ router.post(
 				body.user_id,
 				body.created_at,
 			]
+		)
+		await pool.query(
+			`update appusers set posts_count=posts_count + 1 where id ='${body.user_id}' `
 		)
 		res.status(202).json({
 			success: true,
@@ -62,6 +65,20 @@ router.put(
 	asyncHandler(async (req, res, next) => {
 		await pool.query(buildLikeUpdateQuery(req.body))
 		await pool.query(buildInsertinlikesTable(req.body))
+		await pool.query(`UPDATE ${req.body.user_id}posts
+		SET    likes = ARRAY (
+						 SELECT v
+						 FROM   unnest(likes) WITH ORDINALITY t(v,ord)
+						 GROUP  BY 1
+						 ORDER  BY min(ord)
+						)
+		WHERE  cardinality(likes) > 1  -- optional
+		AND    likes <> ARRAY (
+						 SELECT v
+						 FROM   unnest(likes) WITH ORDINALITY t(v,ord)
+						 GROUP  BY 1
+						 ORDER  BY min(ord)
+						);`)
 		res.status(202).json({
 			success: true,
 			results: [],
