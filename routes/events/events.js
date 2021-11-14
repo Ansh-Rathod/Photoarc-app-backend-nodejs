@@ -38,5 +38,19 @@ router.put(
 		})
 	})
 )
+router.get(
+	'/isfollow',
+	asyncHandler(async (req, res, next) => {
+		const { userId, following } = req.query
+		const { rows } = await pool.query(
+			`SELECT * FROM ${userId}following WHERE following_id = $1`,
+			[following]
+		)
+		res.status(200).json({
+			success: true,
+			isFollow: rows.length > 0,
+		})
+	})
+)
 
 export default router
