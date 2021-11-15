@@ -45,13 +45,38 @@ CREATE TABLE likes(
     FOREIGN KEY (post_id) REFERENCES posts(post_id)
 
 )
-CREATE TABLE comments(
-    commenter_user_id varchar(255) NOT NULL,
-    post_id varchar(255) NOT NULL,
-    comment TEXT NOT NULL,
-    FOREIGN KEY (commenter_user_id) REFERENCES appusers(id),
-    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+
+
+create or replace function get_feed() 
+return table (
+    post_id
 )
-UPDATE appusers
-SET avatar_url = 'Alfred Schmidt', 
-WHERE id = 1;
+language plpgsql
+as $$
+begin 
+    return query
+           select post_id from quwdzrrnxwkucawtnnmgufposts;
+end;$$
+create or replace function get_feed(
+    _tbl regclass
+) 
+     returns table (
+         new_post_id varchar,
+         new_post_image_url text,
+         new_caption text,
+         new_user_id varchar,
+         new_posted_at timestamp,
+         new_likes text[],
+         new_username varchar,
+         new_name varchar,
+         new_avatar_url varchar
+     )
+     language plpgsql
+as $$
+declare 
+  var_r record;
+begin 
+    return query
+       execute format('select post_id,post_image_url,caption,user_id,posted_at,likes,username,name,avatar_url from %s
+        left join appusers ON %s.user_id = appusers.id;',_tbl,_tbl);
+end;$$

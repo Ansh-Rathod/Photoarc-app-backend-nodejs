@@ -5,7 +5,7 @@ import followuser from './routes/events/events.js'
 import createPost from './routes/post/create-post.js'
 import comment from './routes/comments/comments.js'
 import search from './routes/search/search.js'
-
+import feed from './routes/feed/get-user-feed.js'
 const app = express()
 
 app.use(express.json())
@@ -16,6 +16,7 @@ app.use('/api/v1/user/events', followuser)
 app.use('/api/v1/post/', createPost)
 app.use('/api/v1/post/comments', comment)
 app.use('/api/v1/search', search)
+app.use('/api/v1/feed', feed)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 3000

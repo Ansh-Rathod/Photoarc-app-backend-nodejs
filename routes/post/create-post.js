@@ -114,7 +114,19 @@ router.get(
 		var data = await pool.query(buildGetPostsQuery(req.params.user_id))
 		res.status(200).json({
 			success: true,
-			results: data.rows,
+			results: data.rows.map((row) => {
+				return {
+					post_id: row.post_id,
+					post_image_url: row.post_image_url,
+					caption: row.caption,
+					user_id: row.user_id,
+					posted_at: row.posted_at,
+					likes: row.likes,
+					username: row.username,
+					name: row.name,
+					avatar_url: row.avatar_url,
+				}
+			}),
 		})
 	})
 )
