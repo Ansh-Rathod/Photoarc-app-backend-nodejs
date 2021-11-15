@@ -47,16 +47,6 @@ CREATE TABLE likes(
 )
 
 
-create or replace function get_feed() 
-return table (
-    post_id
-)
-language plpgsql
-as $$
-begin 
-    return query
-           select post_id from quwdzrrnxwkucawtnnmgufposts;
-end;$$
 create or replace function get_feed(
     _tbl regclass
 ) 
@@ -73,10 +63,47 @@ create or replace function get_feed(
      )
      language plpgsql
 as $$
-declare 
-  var_r record;
+declare
+var_r record;
+
 begin 
-    return query
-       execute format('select post_id,post_image_url,caption,user_id,posted_at,likes,username,name,avatar_url from %s
-        left join appusers ON %s.user_id = appusers.id;',_tbl,_tbl);
+    for var_r in 
+       execute 'SELECT * FROM '|| _tbl
+    loop return query execute 'select post_id,post_image_url,caption,user_id,posted_at,likes,username,name,avatar_url from ' || quote_ident(var_r.following_id)||'posts
+        left join appusers ON '|| quote_ident(var_r.following_id) ||'posts.user_id = appusers.id order by posted_at desc limit 5;';
+
+     end loop;
+
+end;$$
+
+
+
+
+create or replace function get_search_posts(
+    
+) 
+     returns table (
+         new_post_id varchar,
+         new_post_image_url text,
+         new_caption text,
+         new_user_id varchar,
+         new_posted_at timestamp,
+         new_likes text[],
+         new_username varchar,
+         new_name varchar,
+         new_avatar_url varchar
+     )
+     language plpgsql
+as $$
+declare
+var_r record;
+
+begin 
+    for var_r in 
+       execute 'SELECT * FROM appusers order by created_at desc limit 100;'
+    loop return query execute 'select post_id,post_image_url,caption,user_id,posted_at,likes,username,name,avatar_url from ' || quote_ident(var_r.id)||'posts
+        left join appusers ON '|| quote_ident(var_r.id) ||'posts.user_id = appusers.id order by posted_at desc limit 5;';
+
+     end loop;
+
 end;$$

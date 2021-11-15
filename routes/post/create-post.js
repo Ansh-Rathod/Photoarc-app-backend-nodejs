@@ -30,6 +30,7 @@ router.put(
 		res.status(202).json({
 			success: true,
 			url: req.file.path,
+			data: req.file,
 		})
 	})
 )

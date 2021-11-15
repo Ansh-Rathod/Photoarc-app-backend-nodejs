@@ -15,5 +15,29 @@ router.get(
 		})
 	})
 )
+router.get(
+	'/get_posts',
+	asyncHandler(async (req, res, next) => {
+		var { rows } = await pool.query(`select * from get_search_posts();`)
+
+		res.status(200).json({
+			success: true,
+			results: rows.map((row) => {
+				return {
+					post_id: row.new_post_id,
+					post_image_url: row.new_post_image_url,
+					caption: row.new_caption,
+					user_id: row.new_user_id,
+					posted_at: row.new_posted_at,
+					likes: row.new_likes,
+					username: row.new_username,
+					name: row.new_name,
+					avatar_url: row.new_avatar_url,
+				}
+			}),
+		})
+	})
+)
+// get_search_posts
 
 export default router
