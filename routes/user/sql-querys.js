@@ -79,6 +79,17 @@ function buildDeleteUserCommentsQuery(body) {
 function buildUpdateUserInfoQuery(body) {
 	return `update appusers set username = '${body.username}', name = '${body.name}', bio = '${body.bio}', url = '${body.url}' where id = '${body.id}'`
 }
+function buildNotificationTableQuery(body) {
+	return `CREATE TABLE ${body.id}notifications (
+        notification_id varchar(255) NOT NULL UNIQUE,
+        user_id varchar(255) NOT NULL,
+        comment TEXT,
+        post_id varchar(255) NOT NULL,
+        _type varchar(255) NOT NULL,
+        follower_id varchar(255) NOT NULL,
+        time_at TIMESTAMP NOT NULL
+    );`
+}
 
 export {
 	buildUserFollowersQuery,
@@ -95,4 +106,5 @@ export {
 	buildDeleteUserLikesQuery,
 	buildUpdateUserInfoQuery,
 	buildDeleteUserCommentsQuery,
+	buildNotificationTableQuery,
 }
