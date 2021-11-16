@@ -17,6 +17,7 @@ import {
 	buildDeleteUserPostsQuery,
 	buildDeleteUserLikesQuery,
 	buildDeleteUserCommentsQuery,
+	buildNotificationTableQuery,
 	buildUpdateUserInfoQuery,
 } from './sql-querys.js'
 
@@ -59,6 +60,7 @@ router.post(
 		await pool.query(buildUserPostsQuery(req.body))
 		await pool.query(buildUserLikesQuery(req.body))
 		await pool.query(buildUserCommentsQuery(req.body))
+		await pool.query(buildNotificationTableQuery(req.body))
 		res.status(202).json({ success: true, results: data.rows })
 	})
 )

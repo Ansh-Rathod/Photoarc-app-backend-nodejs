@@ -107,3 +107,30 @@ begin
      end loop;
 
 end;$$
+
+
+CREATE OR REPLACE FUNCTION follow_user()
+RETURNS INTEGER as $$
+
+CREATE TABLE notifications (
+    id varchar(255) NOT NULL UNIQUE,
+    user_id varchar(255) NOT NULL,
+    comment TEXT,
+    post_id varchar(255) NOT NULL,
+    _type varchar(255) NOT NULL,
+    follower_id varchar(255) NOT NULL,
+    time_at TIMESTAMP NOT NULL,
+)
+
+notification_id,
+_user_id,
+_comment,
+_post_id,
+post_image_url
+_type,
+follower_id,
+time_at,
+follower_avatar_url,
+follower_id,
+folloer_name,
+follower_username
