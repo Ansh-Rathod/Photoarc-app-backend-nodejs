@@ -151,6 +151,7 @@ router.get(
 		})
 	})
 )
+
 router.get(
 	'/following/:id',
 	asyncHandler(async (req, res, next) => {
@@ -159,7 +160,7 @@ router.get(
 	left join appusers on ${id}following.following_id = appusers.id;`)
 		res.status(200).json({
 			success: true,
-			rtatus: rows,
+			results: rows,
 		})
 	})
 )
