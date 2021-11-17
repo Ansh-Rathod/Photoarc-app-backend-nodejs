@@ -139,4 +139,29 @@ router.put(
 	})
 )
 
+router.get(
+	'/followers/:id',
+	asyncHandler(async (req, res, next) => {
+		const { id } = req.params
+		const { rows } = await pool.query(`select * from ${id}followers 
+	left join appusers on ${id}followers.follower_id = appusers.id;`)
+		res.status(200).json({
+			success: true,
+			results: rows,
+		})
+	})
+)
+router.get(
+	'/following/:id',
+	asyncHandler(async (req, res, next) => {
+		const { id } = req.params
+		const { rows } = await pool.query(`select * from ${id}following
+	left join appusers on ${id}following.following_id = appusers.id;`)
+		res.status(200).json({
+			success: true,
+			rtatus: rows,
+		})
+	})
+)
+
 export default router
