@@ -34,18 +34,20 @@ router.post(
 				body.comment_id,
 			]
 		)
-		await pool.query(
-			`insert into ${body.user_id}notifications (notification_id,user_id,comment,post_id,_type,follower_id,time_at) values ($1,$2,$3,$4,$5,$6,$7)`,
-			[
-				uuidv4(),
-				body.commenter_user_id,
-				body.comment,
-				body.post_id,
-				'COMMENT',
-				body.commenter_user_id,
-				getFullTimestamp(),
-			]
-		)
+		if (body.commenter_user_id !== body.user_id) {
+			await pool.query(
+				`insert into ${body.user_id}notifications (notification_id,user_id,comment,post_id,_type,follower_id,time_at) values ($1,$2,$3,$4,$5,$6,$7)`,
+				[
+					uuidv4(),
+					body.commenter_user_id,
+					body.comment,
+					body.post_id,
+					'COMMENT',
+					body.commenter_user_id,
+					getFullTimestamp(),
+				]
+			)
+		}
 
 		res.status(200).json({
 			success: true,
