@@ -8,8 +8,9 @@ router.get(
 	asyncHandler(async (req, res, next) => {
 		const { id } = req.params
 		const { rows } = await pool.query(
-			`select * from ${id}notifications left join appusers
-             on ${id}notifications.follower_id = appusers.id;`
+			`select * from ${id}notifications
+			 left join appusers on ${id}notifications.follower_id = appusers.id
+			 left join ${id}posts on ${id}notifications.post_id=${id}posts.post_id;`
 		)
 		res.status(200).json({
 			success: true,
