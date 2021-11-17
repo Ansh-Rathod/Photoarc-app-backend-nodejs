@@ -68,12 +68,14 @@ router.post(
 )
 
 router.delete(
-	'/',
+	'/:id',
 	asyncHandler(async (req, res, next) => {
+		const { id } = req.params
+		const { comment_id } = req.query
 		await pool.query(
-			`DELETE FROM ${req.body.user_id}comments WHERE id = ${req.body.comment_id}`
+			`DELETE FROM ${id}comments WHERE comment_id = '${comment_id}'`
 		)
-		res.status(202).json({
+		res.status(200).json({
 			success: true,
 			results: [],
 		})
