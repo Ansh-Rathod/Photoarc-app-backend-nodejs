@@ -127,7 +127,11 @@ router.delete(
 router.put(
 	'/:id',
 	asyncHandler(async (req, res, next) => {
-		await pool.query(buildUpdateUserInfoQuery(req.body))
+		const body = req.body
+		await pool.query(
+			`update appusers set username = $1, name = $2, bio = $3, url = $4 where id = '${body.id}'`,
+			[body.username, body.name, body.bio, body.url]
+		)
 		res.status(202).json({
 			success: true,
 			results: [],
