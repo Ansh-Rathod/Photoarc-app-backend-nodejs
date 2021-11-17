@@ -111,6 +111,22 @@ router.post(
 )
 
 router.get(
+	'/one_post/:id',
+	asyncHandler(async (req, res, next) => {
+		const { id } = req.params
+		const { post_id } = req.query
+		const { rows } = await pool.query(`
+		select * from ${id}posts
+		left join appusers on ${id}posts.user_id = appusers.id where post_id ='${post_id}';
+		`)
+
+		res.status(200).json({
+			success: true,
+			results: rows,
+		})
+	})
+)
+router.get(
 	'/:user_id',
 	asyncHandler(async (req, res, next) => {
 		var data = await pool.query(buildGetPostsQuery(req.params.user_id))
