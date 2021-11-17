@@ -131,5 +131,23 @@ router.get(
 		})
 	})
 )
+router.delete(
+	'/:id',
+	asyncHandler(async (req, res, next) => {
+		const { id } = req.params
+		const { post_id } = req.query
+		await pool.query(`delete from ${id}likes where post_id = '${post_id}'`)
+		await pool.query(
+			`delete from ${id}notifications where post_id = '${post_id}'`
+		)
+		await pool.query(`delete from ${id}comments where post_id = '${post_id}'`)
+		await pool.query(`delete from ${id}posts where post_id = '${post_id}'`)
+
+		res.status(200).json({
+			success: true,
+			results: [],
+		})
+	})
+)
 
 export default router
