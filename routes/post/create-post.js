@@ -98,7 +98,7 @@ router.put(
 		})
 	})
 )
-router.get(
+router.post(
 	'/likes',
 	asyncHandler(async (req, res, next) => {
 		var data = await pool.query(buildGetLikesQuery(req.body))
