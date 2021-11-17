@@ -142,7 +142,9 @@ router.delete(
 		)
 		await pool.query(`delete from ${id}comments where post_id = '${post_id}'`)
 		await pool.query(`delete from ${id}posts where post_id = '${post_id}'`)
-
+		await pool.query(
+			`update appusers set posts_count=posts_count - 1 where id ='${id}' `
+		)
 		res.status(200).json({
 			success: true,
 			results: [],
