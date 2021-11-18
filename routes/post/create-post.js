@@ -2,7 +2,12 @@ import express from 'express'
 import asyncHandler from '../../methods/async-function.js'
 import { mediaUpload } from '../../methods/media-upload.js'
 import multer from 'multer'
+import cloudinary from 'cloudinary'
 import pool from '../../db.js'
+
+import formidable from 'formidable'
+const { IncomingForm } = formidable
+
 import {
 	buildCreatePostsQuery,
 	buildLikeUpdateQuery,
@@ -19,18 +24,26 @@ const upload = multer({ storage: mediaUpload('posts') })
 
 router.put(
 	'/upload-post',
-	upload.single('picture'),
 	asyncHandler(async (req, res, next) => {
-		if (req.file == undefined) {
-			res.status(400).send({
-				status: 400,
-				message: 'No file uploaded',
+		const data = await new Promise((resolve, reject) => {
+			const form = new IncomingForm()
+			form.parse(req, (err, fields, files) => {
+				if (err) return reject(err)
+				resolve({ fields, files })
 			})
-		}
+		})
+		console.log(data.files.picture.filepath)
+		var result = await cloudinary.v2.uploader.upload(
+			data.files.picture.filepath,
+			{
+				folder: 'POSTS',
+			}
+		)
+
 		res.status(202).json({
 			success: true,
-			url: req.file.path,
-			data: req.file,
+			url: result.url,
+			data: result,
 		})
 	})
 )
@@ -41,14 +54,16 @@ router.post(
 		const body = req.body
 		await pool.query(
 			`insert into ${body.user_id}posts
-			(post_id,post_image_url,caption,user_id,posted_at,likes,comments_count)
-			 values ($1, $2,$3,$4,$5,'{}',0);`,
+			(post_id,post_image_url,caption,user_id,posted_at,likes,comments_count,width,height)
+			 values ($1, $2,$3,$4,$5,'{}',0,$6,$7);`,
 			[
 				body.post_id,
 				body.post_image_url,
 				body.caption,
 				body.user_id,
 				body.created_at,
+				body.width,
+				body.height,
 			]
 		)
 		await pool.query(

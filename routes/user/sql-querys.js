@@ -15,6 +15,8 @@ function buildUserPostsQuery(body) {
     CREATE TABLE ${body.id}posts (
         post_id varchar(255) NOT NULL UNIQUE,
         post_image_url TEXT,
+        width INT NOT NULL,
+        height INT NOT NULL,
         caption TEXT,
         user_id varchar(255) ,
         posted_at TIMESTAMP NOT NULL,
