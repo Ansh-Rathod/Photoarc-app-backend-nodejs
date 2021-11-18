@@ -32,6 +32,8 @@ router.get(
 					likes: row.new_likes,
 					username: row.new_username,
 					name: row.new_name,
+					width: row.new_width,
+					height: row.new_height,
 					avatar_url: row.new_avatar_url,
 				}
 			}),

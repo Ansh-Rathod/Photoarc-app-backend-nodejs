@@ -59,6 +59,8 @@ create or replace function get_feed(
          new_likes text[],
          new_username varchar,
          new_name varchar,
+new_width int,
+         new_height int,
          new_avatar_url varchar
      )
      language plpgsql
@@ -91,6 +93,8 @@ create or replace function get_search_posts(
          new_likes text[],
          new_username varchar,
          new_name varchar,
+         new_width int,
+         new_height int,
          new_avatar_url varchar
      )
      language plpgsql

@@ -158,6 +158,8 @@ router.get(
 					username: row.username,
 					name: row.name,
 					avatar_url: row.avatar_url,
+					width: row.width,
+					height: row.height,
 				}
 			}),
 		})
