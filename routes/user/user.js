@@ -47,7 +47,7 @@ router.post(
 				body.username,
 				body.name,
 				body.bio,
-				JSON.stringify(body.url),
+				body.url,
 				body.avatar_url,
 				body.created_at,
 				0,
