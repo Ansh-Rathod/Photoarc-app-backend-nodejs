@@ -20,7 +20,7 @@
   - now go to the dashboard and copy your **Cloud Name**, **API Key,** and **API Secret**.
   - and paste into your .env file.
 
-```docker
+```env
 DATABASE_URL=<Postgres SQL connection string>,
 CLOUD_NAME=<Cloud Name>,
 API_KEY=<API Key>,
