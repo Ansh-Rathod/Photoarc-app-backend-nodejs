@@ -3,9 +3,9 @@ import { CloudinaryStorage } from 'multer-storage-cloudinary'
 
 export const mediaUpload = (folder) => {
 	cloudinary.v2.config({
-		cloud_name: 'dornu6mmy',
-		api_key: '459913161249364',
-		api_secret: '9z9buL0YNMYG1aB8w4wh8gaP-3s',
+		cloud_name: process.env.CLOUD_NAME,
+		api_key: process.env.API_KEY,
+		api_secret: process.env.API_SECRET,
 	})
 
 	return new CloudinaryStorage({
