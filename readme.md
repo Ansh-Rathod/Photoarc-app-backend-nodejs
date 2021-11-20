@@ -1,6 +1,14 @@
 # PHOTOARC APP BACKEND
 
-This is the Backend of the Photoarc app. You need to follow some steps to work on this API.
+## Requirements
+
+- postgresql installed.
+- Cloudinary account.
+- node js version 12.0x +
+
+### This is the Backend of the Photoarc app. You need to follow some steps to work on this API.
+
+<br>
 
 - Clone this repository to your local machine.
 - Remove "engines": { "node": "17.x" } line in package.json file.
