@@ -33,9 +33,9 @@ Now open up a terminal and install some node packages with the below command.
 npm install
 ```
 
-connect your pshell to your database and run following query
+connect your psql(postgres sql terminal) to your database and run following query
 
-- frist create an appusers table by running this query to your pshell.
+- frist create an appusers table by running this query to your psql.
   ```sql
    CREATE TABLE appusers (
     id varchar(255) NOT NULL UNIQUE PRIMARY KEY,
