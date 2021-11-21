@@ -25,7 +25,7 @@ function buildGetLikesQuery(body) {
 }
 function buildGetPostsQuery(user_id) {
 	return `select * from ${user_id}posts
-      left join appusers ON ${user_id}posts.user_id = appusers.id;`
+      left join appusers ON ${user_id}posts.user_id = appusers.id order by posted_at desc;`
 }
 
 export {

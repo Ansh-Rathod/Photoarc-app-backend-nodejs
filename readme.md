@@ -69,9 +69,7 @@ connect your psql(postgres sql terminal) to your database and run following quer
          new_avatar_url varchar,
          new_width int,
          new_height int
-     )
-     language plpgsql
-   as $$
+     ) as $$
    declare
    var_r record;
 
@@ -83,7 +81,8 @@ connect your psql(postgres sql terminal) to your database and run following quer
 
      end loop;
 
-  end;$$
+  end;
+  $$ language plpgsql;
   ```
 
 * run another query to get trending posts
@@ -103,7 +102,7 @@ connect your psql(postgres sql terminal) to your database and run following quer
          new_width integer,
          new_height integer
      )
-     language plpgsql
+
    as $$
    declare
    var_r record;
@@ -116,7 +115,8 @@ connect your psql(postgres sql terminal) to your database and run following quer
 
      end loop;
 
-   end;$$
+   end;
+  $$ language plpgsql;
   ```
 
 Now you can test this API on your [localhost](http://localhost):300/api/v1/ by running following command.
