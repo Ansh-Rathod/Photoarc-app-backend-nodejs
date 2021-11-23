@@ -5,6 +5,7 @@ import multer from 'multer'
 import cloudinary from 'cloudinary'
 import pool from '../../db.js'
 
+import { v4 as uuidv4 } from 'uuid'
 import formidable from 'formidable'
 const { IncomingForm } = formidable
 
@@ -21,7 +22,17 @@ import {
 const router = express.Router()
 router.use(express.json())
 const upload = multer({ storage: mediaUpload('posts') })
+function getFullTimestamp() {
+	const pad = (n, s = 2) => `${new Array(s).fill(0)}${n}`.slice(-s)
+	const d = new Date()
 
+	return `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(
+		d.getDate()
+	)} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(
+		d.getMilliseconds(),
+		3
+	)}`
+}
 router.put(
 	'/upload-post',
 	asyncHandler(async (req, res, next) => {
@@ -79,6 +90,8 @@ router.post(
 router.put(
 	'/like',
 	asyncHandler(async (req, res, next) => {
+		const { body } = req.body
+
 		await pool.query(buildLikeUpdateQuery(req.body))
 		await pool.query(buildInsertinlikesTable(req.body))
 		await pool.query(`UPDATE ${req.body.user_id}posts
@@ -95,6 +108,20 @@ router.put(
 						 GROUP  BY 1
 						 ORDER  BY min(ord)
 						);`)
+		if (body.liker_id !== body.user_id) {
+			await pool.query(
+				`insert into ${body.user_id}notifications (notification_id,user_id,comment,post_id,_type,follower_id,time_at) values ($1,$2,$3,$4,$5,$6,$7)`,
+				[
+					uuidv4(),
+					body.user_id,
+					'',
+					body.post_id,
+					'LIKE',
+					body.liker_id,
+					getFullTimestamp(),
+				]
+			)
+		}
 		res.status(202).json({
 			success: true,
 			results: [],
@@ -107,6 +134,11 @@ router.put(
 	asyncHandler(async (req, res, next) => {
 		await pool.query(buildUnlikeUpdateQuery(req.body))
 		await pool.query(buildDeleteFromlikesTable(req.body))
+		const { body } = req.body
+		await pool.query(
+			`delete from ${body.user_id}notifications where post_id='${body.post_id}' and follower_id='${body.liker_id}';`
+		)
+
 		res.status(202).json({
 			success: true,
 			results: [],
