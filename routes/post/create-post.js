@@ -90,7 +90,7 @@ router.post(
 router.put(
 	'/like',
 	asyncHandler(async (req, res, next) => {
-		const { body } = req.body
+		const body = req.body
 
 		await pool.query(buildLikeUpdateQuery(req.body))
 		await pool.query(buildInsertinlikesTable(req.body))
@@ -113,7 +113,7 @@ router.put(
 				`insert into ${body.user_id}notifications (notification_id,user_id,comment,post_id,_type,follower_id,time_at) values ($1,$2,$3,$4,$5,$6,$7)`,
 				[
 					uuidv4(),
-					body.user_id,
+					body.liker_id,
 					'',
 					body.post_id,
 					'LIKE',
@@ -134,7 +134,7 @@ router.put(
 	asyncHandler(async (req, res, next) => {
 		await pool.query(buildUnlikeUpdateQuery(req.body))
 		await pool.query(buildDeleteFromlikesTable(req.body))
-		const { body } = req.body
+		const body = req.body
 		await pool.query(
 			`delete from ${body.user_id}notifications where post_id='${body.post_id}' and follower_id='${body.liker_id}';`
 		)
