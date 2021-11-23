@@ -23,10 +23,7 @@ router.delete(
 	'/:id',
 	asyncHandler(async (req, res, next) => {
 		const { id } = req.params
-		const { notification_id } = req.query
-		pool.query(
-			`delete from ${id}notifications;'`
-		)
+		pool.query(`delete from ${id}notifications;'`)
 		res.status(200).json({
 			success: true,
 			results: [],
