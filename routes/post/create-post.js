@@ -134,10 +134,6 @@ router.put(
 	asyncHandler(async (req, res, next) => {
 		await pool.query(buildUnlikeUpdateQuery(req.body))
 		await pool.query(buildDeleteFromlikesTable(req.body))
-		const body = req.body
-		await pool.query(
-			`delete from ${body.user_id}notifications where post_id='${body.post_id}' and follower_id='${body.liker_id}';`
-		)
 
 		res.status(202).json({
 			success: true,
