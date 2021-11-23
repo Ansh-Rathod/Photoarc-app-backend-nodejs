@@ -25,7 +25,7 @@ router.delete(
 		const { id } = req.params
 		const { notification_id } = req.query
 		pool.query(
-			`delete from ${id}notifications where notification_id = '${notification_id}'`
+			`delete from ${id}notifications;'`
 		)
 		res.status(200).json({
 			success: true,
