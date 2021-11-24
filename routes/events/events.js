@@ -25,7 +25,7 @@ router.put(
 		await pool.query(buildUpdateFollowingCountQuery(req.body))
 		await pool.query(
 			`insert into ${req.body.user_id}notifications (notification_id,user_id,comment,post_id,_type,follower_id,time_at) values ($1,$2,$3,$4,$5,$6,$7)`,
-			[uuidv4(), '', '', '', 'FOLLOW', req.body.follower_id, body.time_at]
+			[uuidv4(), '', '', '', 'FOLLOW', req.body.follower_id, req.body.time_at]
 		)
 		res.status(200).json({
 			success: true,
