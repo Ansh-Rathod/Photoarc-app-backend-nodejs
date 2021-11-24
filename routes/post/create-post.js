@@ -22,17 +22,7 @@ import {
 const router = express.Router()
 router.use(express.json())
 const upload = multer({ storage: mediaUpload('posts') })
-function getFullTimestamp() {
-	const pad = (n, s = 2) => `${new Array(s).fill(0)}${n}`.slice(-s)
-	const d = new Date()
 
-	return `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(
-		d.getDate()
-	)} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(
-		d.getMilliseconds(),
-		3
-	)}`
-}
 router.put(
 	'/upload-post',
 	asyncHandler(async (req, res, next) => {
@@ -118,7 +108,7 @@ router.put(
 					body.post_id,
 					'LIKE',
 					body.liker_id,
-					getFullTimestamp(),
+					body.time_at,
 				]
 			)
 		}

@@ -16,18 +16,6 @@ import {
 
 const router = express.Router()
 
-function getFullTimestamp() {
-	const pad = (n, s = 2) => `${new Array(s).fill(0)}${n}`.slice(-s)
-	const d = new Date()
-
-	return `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(
-		d.getDate()
-	)} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(
-		d.getMilliseconds(),
-		3
-	)}`
-}
-
 router.put(
 	'/follow',
 	asyncHandler(async (req, res, next) => {
@@ -37,7 +25,7 @@ router.put(
 		await pool.query(buildUpdateFollowingCountQuery(req.body))
 		await pool.query(
 			`insert into ${req.body.user_id}notifications (notification_id,user_id,comment,post_id,_type,follower_id,time_at) values ($1,$2,$3,$4,$5,$6,$7)`,
-			[uuidv4(), '', '', '', 'FOLLOW', req.body.follower_id, getFullTimestamp()]
+			[uuidv4(), '', '', '', 'FOLLOW', req.body.follower_id, body.time_at]
 		)
 		res.status(200).json({
 			success: true,

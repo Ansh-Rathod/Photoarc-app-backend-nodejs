@@ -6,18 +6,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { buildCrateCommentsQuery, buildGetCommentsQuery } from './sql-querys.js'
 const router = express.Router()
 
-function getFullTimestamp() {
-	const pad = (n, s = 2) => `${new Array(s).fill(0)}${n}`.slice(-s)
-	const d = new Date()
-
-	return `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(
-		d.getDate()
-	)} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(
-		d.getMilliseconds(),
-		3
-	)}`
-}
-
 router.post(
 	'/create-comment',
 	asyncHandler(async (req, res, next) => {
@@ -44,7 +32,7 @@ router.post(
 					body.post_id,
 					'COMMENT',
 					body.commenter_user_id,
-					getFullTimestamp(),
+					body.comment_created_at,
 				]
 			)
 		}
